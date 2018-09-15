@@ -3,6 +3,9 @@ class PlusPartMoverStage {
     canvas : HTMLCanvasElement = document.createElement('canvas')
     context : CanvasRenderingContext2D
     size : number = Math.min(w, h)
+    ppm : PlusPartMover = new PlusPartMover()
+    animator : Animator = new Animator()
+
     initCanvas() {
         this.canvas.width = this.size
         this.canvas.height = this.size
@@ -12,11 +15,19 @@ class PlusPartMoverStage {
     render() {
         this.context.fillStyle = '#BDBDBD'
         this.context.fillRect(0, 0, w, h)
+        this.ppm.draw(this.context, this.size)
     }
 
     handleTap() {
         this.canvas.onmousedown = () => {
-
+            this.ppm.startUpdating(() => {
+              this.animator.start(() => {
+                  this.render()
+                  this.ppm.update(() => {
+                      this.animator.stop()
+                  })
+              })
+            })
         }
     }
 
