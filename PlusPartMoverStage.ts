@@ -10,6 +10,7 @@ class PlusPartMoverStage {
         this.canvas.width = this.size
         this.canvas.height = this.size
         this.context = this.canvas.getContext('2d')
+        document.body.appendChild(this.canvas)
     }
 
     render() {
@@ -25,6 +26,7 @@ class PlusPartMoverStage {
                   this.render()
                   this.ppm.update(() => {
                       this.animator.stop()
+                      this.render()
                   })
               })
             })
@@ -52,7 +54,7 @@ class State {
     prevScale : number = 0
 
     update(cb : Function) {
-        this.scale += 0.1 * this.dir
+        this.scale += 0.025 * this.dir
         if (Math.abs(this.scale - this.prevScale) > 1) {
             this.scale = this.prevScale + this.dir
             this.dir = 0
@@ -102,7 +104,7 @@ class PlusPartMover {
             context.save()
             context.rotate(Math.PI/2 * i)
             context.save()
-            context.translate(0, -h/2 * sc)
+            context.translate(0, -(h/2 + context.lineWidth) * sc)
             context.beginPath()
             context.moveTo(0, 0)
             context.lineTo(0, -size/10)
