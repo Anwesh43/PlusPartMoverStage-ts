@@ -76,3 +76,37 @@ class Animator {
         }
     }
 }
+
+class PlusPartMover {
+    state : State = new State()
+
+    draw(context : CanvasRenderingContext2D, size : number) {
+        context.lineWidth = Math.min(size, size) / 60
+        context.lineCap = 'round'
+        context.strokeStyle = '#4A148C'
+        context.save()
+        context.translate(size/2, size/2)
+        for(var i = 0; i < 4; i++) {
+            const sc : number = Math.min(0.25, Math.max(0, this.state.scale - i * 0.25)) * 4
+            context.save()
+            context.rotate(Math.PI/2 * i)
+            context.save()
+            context.translate(0, -h/2 * sc)
+            context.beginPath()
+            context.moveTo(0, 0)
+            context.lineTo(0, -size/10)
+            context.stroke()
+            context.restore()
+            context.restore()
+        }
+        context.restore()
+    }
+
+    update(cb : Function) {
+        this.state.update(cb)
+    }
+
+    startUpdating(cb : Function) {
+        this.state.startUpdating(cb)
+    }
+}
